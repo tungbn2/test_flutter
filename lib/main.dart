@@ -9,6 +9,7 @@ void main() {
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
+    print("create State");
     return _MyAppState();
   }
 }
@@ -18,7 +19,21 @@ class _MyAppState extends State<MyApp> {
   void set questIndex(int value) => _questIndex = value;
 
   @override
+  void initState() {
+    super.initState();
+    print("init State");
+  }
+
+  @override
+  void dispose() {
+    print('Dispose used');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    const img_url = '';
+
     const questions = [
       {
         'question': 'Question 1 ?',
@@ -48,7 +63,9 @@ class _MyAppState extends State<MyApp> {
       });
     }
 
+    print("build app");
     return MaterialApp(
+      theme: ThemeData(primaryColor: Colors.green[50]),
       home: Scaffold(
         appBar: AppBar(
           title: Text('My Title App'),
@@ -71,7 +88,8 @@ class _MyAppState extends State<MyApp> {
                       style: TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
-            )
+            ),
+            Image.asset('assets/img/img_1.png'),
           ],
         ),
       ),
