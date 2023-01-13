@@ -1,39 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:helloworld/answer.dart';
+import 'package:helloworld/question.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      // Application name
-      title: 'Flutter Hello World',
-      // Application theme data, you can set the colors for the application as
-      // you want
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      // A widget which will be started on application startup
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+  State<StatefulWidget> createState() {
+    return _MyAppState();
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  final String title;
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class _MyAppState extends State<MyApp> {
+  var _questIndex = 0;
+  void set questIndex(int value) => _questIndex = value;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // The title text which will be shown on the action bar
-        title: Text(title),
-      ),
-      body: Center(
-        child: Text(
-          'Hello, World!',
+    const questions = [
+      {
+        'question': 'Question 1 ?',
+        'answers': ['1', '2', '3']
+      },
+      {
+        'question': 'Question 2 ?',
+        'answers': ['1', '2', '3', '4']
+      },
+      {
+        'question': 'Question 3 ?',
+        'answers': ['1', '2', '3']
+      },
+      {
+        'question': 'Question 4 ?',
+        'answers': ['1', '2', '3', '4']
+      },
+    ];
+
+    void logAns(String ans) {
+      setState(() {
+        if (_questIndex < questions.length - 1) {
+          questIndex = _questIndex + 1;
+        } else {
+          questIndex = 0;
+        }
+      });
+    }
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('My Title App'),
+        ),
+        body: Column(
+          children: <Widget>[
+            Question(questions[_questIndex]['question'] as String),
+            ...(questions[_questIndex]['answers'] as List<String>).map((item) {
+              return Answer(item, logAns);
+            }).toList(),
+            Text.rich(
+              TextSpan(
+                text: 'Hello', // default text style
+                children: <TextSpan>[
+                  TextSpan(
+                      text: ' beautiful ',
+                      style: TextStyle(fontStyle: FontStyle.italic)),
+                  TextSpan(
+                      text: 'world',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
